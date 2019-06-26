@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { getProjects } from "../actions/projectActions";
 
 class Dashboard extends Component {
-  componentDidMount(nextProps) {
+  componentDidMount() {
     this.props.getProjects();
   }
 
