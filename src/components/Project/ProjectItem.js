@@ -1,20 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { deleteProject } from "../../actions/projectActions";
 
 class ProjectItem extends Component {
+  onClickDelete = projectIdentifier => {
+    this.props.deleteProject(projectIdentifier);
+  };
+
   render() {
-    const { projectIdentifier, projectName, description } = this.props;
+    const { project } = this.props;
     return (
       <div className="container">
         <div className="card card-body bg-light mb-3">
           <div className="row">
             <div className="col-2">
-              <span className="mx-auto">{projectIdentifier}</span>
+              <span className="mx-auto">{project.projectIdentifier}</span>
             </div>
             <div className="col-lg-6 col-md-4 col-8">
-              <h3>{projectName}</h3>
-              <p>{description}</p>
+              <h3>{project.projectName}</h3>
+              <p>{project.description}</p>
             </div>
             <div className="col-md-4 d-none d-lg-block">
               <ul className="list-group">
@@ -24,18 +30,22 @@ class ProjectItem extends Component {
                   </li>
                 </a>
                 <Link
-                  to={"/updateProject/" + projectIdentifier}
+                  to={`/updateProject/${project.projectIdentifier}`}
                   className="btn btn-lg btn-info"
                 >
                   <li className="list-group-item update">
                     <i className="fa fa-edit pr-1"> Update Project Info</i>
                   </li>
                 </Link>
-                <a href="">
-                  <li className="list-group-item delete">
-                    <i className="fa fa-minus-circle pr-1"> Delete Project</i>
-                  </li>
-                </a>
+                <li
+                  onClick={this.onClickDelete.bind(
+                    this,
+                    project.projectIdentifier
+                  )}
+                  className="list-group-item delete"
+                >
+                  <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+                </li>
               </ul>
             </div>
           </div>
@@ -46,9 +56,11 @@ class ProjectItem extends Component {
 }
 
 ProjectItem.propTypes = {
-  projectIdentifier: PropTypes.string.isRequired,
-  projectName: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  project: PropTypes.object.isRequired,
+  deleteProject: PropTypes.func.isRequired
 };
 
-export default ProjectItem;
+export default connect(
+  null,
+  { deleteProject }
+)(ProjectItem);

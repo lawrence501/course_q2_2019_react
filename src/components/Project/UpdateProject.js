@@ -14,6 +14,7 @@ class UpdateProject extends Component {
       description: "",
       startDate: "",
       endDate: "",
+      id: "",
       errors: {}
     };
 
@@ -22,25 +23,32 @@ class UpdateProject extends Component {
   }
 
   componentDidMount() {
-    this.props.getSingleProject(this.props.match.params.projectIdentifier);
+    const { projectIdentifier } = this.props.match.params;
+    this.props.getSingleProject(projectIdentifier, this.props.history);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.project.project) {
-      this.setState({
-        projectName: nextProps.project.project.projectName,
-        projectIdentifier: nextProps.project.project.projectIdentifier,
-        description: nextProps.project.project.description,
-        startDate: nextProps.project.project.startDate,
-        endDate: nextProps.project.project.endDate
-      });
-    }
-    console.log("componentWillReceiveProps:", nextProps);
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors
       });
     }
+    const {
+      projectName,
+      projectIdentifier,
+      description,
+      startDate,
+      endDate,
+      id
+    } = nextProps.project.project;
+    this.setState({
+      projectName: projectName,
+      projectIdentifier: projectIdentifier,
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
+      id: id
+    });
   }
 
   onChange(e) {
@@ -49,9 +57,8 @@ class UpdateProject extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
-    // const updatedProject = this.state;
-    // this.props.createProject(updatedProject, this.props.history);
+    const updatedProject = this.state;
+    this.props.createProject(updatedProject, this.props.history);
   }
 
   render() {
@@ -89,6 +96,7 @@ class UpdateProject extends Component {
                     name="projectIdentifier"
                     value={this.state.projectIdentifier}
                     onChange={this.onChange}
+                    disabled
                   />
                   {errors.projectIdentifier && (
                     <div className="invalid-feedback">
