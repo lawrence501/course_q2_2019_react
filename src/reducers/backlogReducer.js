@@ -1,7 +1,8 @@
 import {
   GET_BACKLOG,
   GET_PROJECT_TASKS,
-  DELETE_PROJECT_TASK
+  DELETE_TASK,
+  GET_SINGLE_TASK
 } from "../actions/types";
 
 const initialState = {
@@ -21,12 +22,17 @@ export default function(state = initialState, action) {
         ...state,
         projectTask: action.payload
       };
-    case DELETE_PROJECT_TASK:
+    case DELETE_TASK:
       return {
         ...state,
         projectTasks: state.projectTasks.filter(
-          task => task.projectIdentifier !== action.payload
+          task => task.projectSequence !== action.payload
         )
+      };
+    case GET_SINGLE_TASK:
+      return {
+        ...state,
+        projectTask: action.payload
       };
     default:
       return state;
