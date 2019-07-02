@@ -1,14 +1,16 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Layout/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddProject from "./components/Project/AddProject";
 import { Provider } from "react-redux";
 import store from "./store";
 import UpdateProject from "./components/Project/UpdateProject";
+import ProjectBoard from "./components/ProjectBoard/ProjectBoard";
+import AddProjectTask from "./components/ProjectBoard/ProjectTask/AddProjectTask";
+import UpdateProjectTask from "./components/ProjectBoard/ProjectTask/UpdateProjectTask";
 
 function App() {
   return (
@@ -22,6 +24,21 @@ function App() {
             exact
             path="/updateProject/:projectIdentifier"
             component={UpdateProject}
+          />
+          <Route
+            exact
+            path="/projectBoard/:projectIdentifier"
+            component={ProjectBoard}
+          />
+          <Route
+            exact
+            path="/addProjectTask/:projectIdentifier"
+            component={AddProjectTask}
+          />
+          <Route
+            exact
+            path="/updateProjectTask/:projectIdentifier/:taskSequence"
+            component={UpdateProjectTask}
           />
         </div>
       </Router>
